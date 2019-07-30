@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import "bootstrap/dist/css/bootstrap.css";
+require("bootstrap");
 
 Vue.config.productionTip = false;
 

@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <div class="row">
-      <div class="col">The home component</div>
+      <div class="col">
+        <h1>The home component</h1>
+      </div>
     </div>
   </div>
 </template>

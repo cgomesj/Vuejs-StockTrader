@@ -1,5 +1,5 @@
 <template>
-  <div>The Portfolio - Stocks Component</div>
+  <h1>The Portfolio - Stocks Component</h1>
 </template>
 
 <script>

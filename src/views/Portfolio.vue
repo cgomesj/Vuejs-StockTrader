@@ -1,5 +1,5 @@
 <template>
-  <div>The Portfolio - Portfolio Component</div>
+  <h1>The Portfolio View</h1>
 </template>
 
 <script>
