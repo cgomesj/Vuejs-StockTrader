@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import * as types from "../store/types";
+import { mapGetters } from "vuex";
 import StockUnit from "../components/StockUnit";
 
 export default {
@@ -21,15 +23,10 @@ export default {
     "app-stock-unit": StockUnit
   },
 
-  data() {
-    return {
-      stocks: [
-        { id: 1, name: "APPLE", price: 110 },
-        { id: 2, name: "GOOGL", price: 88 },
-        { id: 3, name: "AMZON", price: 23 },
-        { id: 4, name: "LNOVO", price: 48 }
-      ]
-    };
+  computed: {
+    ...mapGetters({
+      stocks: types.GET_STOCKS
+    })
   }
 };
 </script>

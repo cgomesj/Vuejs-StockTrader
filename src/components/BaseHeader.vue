@@ -26,9 +26,11 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav mr-lg-5">
+      <ul class="navbar-nav mr-lg-3">
         <li class="nav-item">
-          <a class="nav-link text-warning" id="appEndDay" href="#">End Day</a>
+          <a class="nav-link text-warning" href="#" @click="endDay(5)"
+            >End Day</a
+          >
         </li>
         <li class="nav-item dropdown">
           <a
@@ -46,12 +48,28 @@
           </div>
         </li>
       </ul>
+      <span class="navbar-text">Your Funds: ${{ user.funds }}</span>
     </div>
   </nav>
 </template>
 
 <script>
-export default {};
+import * as types from "../store/types";
+import { mapActions, mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters({
+      user: types.GET_USER_DATA
+    })
+  },
+
+  methods: {
+    ...mapActions({
+      endDay: types.END_DAY
+    })
+  }
+};
 </script>
 
 <style scoped>

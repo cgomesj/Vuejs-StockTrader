@@ -4,7 +4,18 @@
       <div class="card-body">
         <h4 class="card-title">
           {{ stock.name }}
-          <small class="text-secondary ml-2">${{ stock.price }}</small>
+          <small class="text-secondary ml-2 mr-auto">${{ stock.price }}</small>
+          <span
+            v-if="routeView == '/portfolio'"
+            style="font-size: 10pt"
+            class="text-primary float-right"
+          >
+            <span class="text-secondary">Quantity:</span>
+            {{ stock.quantity }}
+            <br />
+            <span class="text-secondary">You Paid:</span>
+            ${{ stock.price }}
+          </span>
         </h4>
         <div class="input-group">
           <input
@@ -15,15 +26,28 @@
             aria-describedby="stock-quantity-input"
             v-model="quantity"
           />
+
           <div class="input-group-append">
-            <button
-              class="btn btn-outline-success"
-              type="button"
-              @click="buyStock"
-              :disabled="quantityCondition"
-            >
-              Buy
-            </button>
+            <div v-if="routeView == '/stocks'">
+              <button
+                class="btn btn-outline-success"
+                type="button"
+                @click="orderStock(order.BUY_STOCK)"
+                :disabled="quantityCondition"
+              >
+                Buy
+              </button>
+            </div>
+            <div v-else-if="routeView == '/portfolio'">
+              <button
+                class="btn btn-outline-danger"
+                type="button"
+                @click="orderStock(order.SELL_STOCK)"
+                :disabled="quantityCondition"
+              >
+                Sell
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -32,6 +56,9 @@
 </template>
 
 <script>
+import * as types from "../store/types";
+import { mapActions } from "vuex";
+
 export default {
   props: {
     stock: Object
@@ -39,7 +66,11 @@ export default {
 
   data() {
     return {
-      quantity: 0
+      quantity: 0,
+      order: {
+        BUY_STOCK: "buy",
+        SELL_STOCK: "sell"
+      }
     };
   },
 
@@ -49,18 +80,32 @@ export default {
         return true;
       }
       return false;
+    },
+
+    routeView() {
+      return this.$route.path;
     }
   },
 
   methods: {
-    buyStock() {
+    ...mapActions({
+      buyStock: types.BUY_STOCK,
+      sellStock: types.SELL_STOCK
+    }),
+
+    orderStock(fn) {
       const order = {
         stockId: this.stock.id,
+        stockName: this.stock.name,
         stockPrice: this.stock.price,
         orderQuantity: this.quantity
       };
 
-      console.log(order);
+      if (fn == this.order.BUY_STOCK) {
+        this.buyStock(order);
+      } else if (fn == this.order.SELL_STOCK) {
+        this.sellStock(order);
+      }
       this.quantity = 0;
     }
   }
