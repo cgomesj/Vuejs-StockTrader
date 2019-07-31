@@ -13,9 +13,17 @@
             placeholder="Quantity"
             aria-label="Quantity"
             aria-describedby="stock-quantity-input"
+            v-model="quantity"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-success" type="button">Buy</button>
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              @click="buyStock"
+              :disabled="quantityCondition"
+            >
+              Buy
+            </button>
           </div>
         </div>
       </div>
@@ -27,6 +35,34 @@
 export default {
   props: {
     stock: Object
+  },
+
+  data() {
+    return {
+      quantity: 0
+    };
+  },
+
+  computed: {
+    quantityCondition() {
+      if (this.quantity <= 0 || !Number.isInteger(Number(this.quantity))) {
+        return true;
+      }
+      return false;
+    }
+  },
+
+  methods: {
+    buyStock() {
+      const order = {
+        stockId: this.stock.id,
+        stockPrice: this.stock.price,
+        orderQuantity: this.quantity
+      };
+
+      console.log(order);
+      this.quantity = 0;
+    }
   }
 };
 </script>
