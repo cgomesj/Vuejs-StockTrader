@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 require("bootstrap");
 
 Vue.filter("currency", value => {
-  return "$" + value;
+  return "$" + value.toLocaleString();
 });
 
 Vue.config.productionTip = false;

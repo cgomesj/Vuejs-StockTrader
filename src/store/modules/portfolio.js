@@ -1,7 +1,7 @@
 import * as types from "../types";
 
 const state = {
-  funds: 100,
+  funds: 10000,
   portfolioStocks: [{ id: 3, quantity: 6 }]
 };
 
