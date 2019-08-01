@@ -48,7 +48,7 @@
           </div>
         </li>
       </ul>
-      <span class="navbar-text">Your Funds: ${{ user.funds }}</span>
+      <span class="navbar-text">Your Funds: {{ funds | currency }}</span>
     </div>
   </nav>
 </template>
@@ -60,7 +60,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      user: types.GET_USER_DATA
+      funds: types.GET_FUNDS
     })
   },
 

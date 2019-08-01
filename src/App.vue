@@ -13,11 +13,23 @@
 </template>
 
 <script>
+import * as types from "./store/types";
+import { mapActions } from "vuex";
 import BaseHeader from "./components/BaseHeader.vue";
 
 export default {
   components: {
     "app-base-header": BaseHeader
+  },
+
+  created() {
+    this.setStock();
+  },
+
+  methods: {
+    ...mapActions({
+      setStock: types.SET_STOCK
+    })
   }
 };
 </script>

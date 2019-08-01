@@ -5,7 +5,7 @@
       <div class="row">
         <component
           :is="'app-stock-unit'"
-          v-for="stock in user.stocks"
+          v-for="stock in portfolioStocks"
           :key="stock.id"
           class="mb-4"
           :stock="stock"
@@ -27,7 +27,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: [types.GET_USER_DATA]
+      portfolioStocks: [types.GET_PORTFOLIO_STOCKS]
     })
   }
 };

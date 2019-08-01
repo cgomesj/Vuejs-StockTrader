@@ -1,25 +1,23 @@
 import * as types from "../types";
+import stocks from "../../data/data";
 
 const state = {
-  stocks: [
-    { id: 1, name: "APPLE", price: 110 },
-    { id: 2, name: "GOOGL", price: 88 },
-    { id: 3, name: "AMZON", price: 23 },
-    { id: 4, name: "LNOVO", price: 48 }
-  ]
+  stocks
 };
 
 const getters = {
   [types.GET_STOCKS]: state => {
     return state.stocks;
-  },
-
-  [types.GET_STOCKS_UNIT]: state => id => {
-    return state.stocks.filter(this.id == id);
   }
 };
 
 const mutations = {
+  [types.MUTATION_SET_STOCK]: (state, stocks) => {
+    state.stocks = stocks;
+  },
+
+  [types.MUTATION_RANDOM_STOCK]: state => {},
+
   [types.MUTATION_END_DAY]: (state, payload) => {
     for (let index = 0; index < state.stocks.length; index++) {
       state.stocks[index].price += payload;
@@ -28,6 +26,14 @@ const mutations = {
 };
 
 const actions = {
+  [types.SET_STOCK]: ({ commit }) => {
+    commit(types.MUTATION_SET_STOCK, stocks);
+  },
+
+  [types.RANDOM_STOCK]: ({ commit }) => {
+    commit(types.MUTATION_RANDOM_STOCK);
+  },
+
   [types.END_DAY]: ({ commit }, payload) => {
     commit(types.MUTATION_END_DAY, payload);
   }

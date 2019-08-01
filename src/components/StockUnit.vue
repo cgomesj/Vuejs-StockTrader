@@ -4,7 +4,9 @@
       <div class="card-body">
         <h4 class="card-title">
           {{ stock.name }}
-          <small class="text-secondary ml-2 mr-auto">${{ stock.price }}</small>
+          <small class="text-secondary ml-2 mr-auto">{{
+            stock.price | currency
+          }}</small>
           <span
             v-if="routeView == '/portfolio'"
             style="font-size: 10pt"
@@ -12,9 +14,6 @@
           >
             <span class="text-secondary">Quantity:</span>
             {{ stock.quantity }}
-            <br />
-            <span class="text-secondary">You Paid:</span>
-            ${{ stock.price }}
           </span>
         </h4>
         <div class="input-group">
@@ -27,27 +26,25 @@
             v-model="quantity"
           />
 
-          <div class="input-group-append">
-            <div v-if="routeView == '/stocks'">
-              <button
-                class="btn btn-outline-success"
-                type="button"
-                @click="orderStock(order.BUY_STOCK)"
-                :disabled="quantityCondition"
-              >
-                Buy
-              </button>
-            </div>
-            <div v-else-if="routeView == '/portfolio'">
-              <button
-                class="btn btn-outline-danger"
-                type="button"
-                @click="orderStock(order.SELL_STOCK)"
-                :disabled="quantityCondition"
-              >
-                Sell
-              </button>
-            </div>
+          <div class="input-group-append" v-if="routeView == '/stocks'">
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              @click="orderStock(order.BUY_STOCK)"
+              :disabled="quantityCondition"
+            >
+              Buy
+            </button>
+          </div>
+          <div class="input-group-append" v-else-if="routeView == '/portfolio'">
+            <button
+              class="btn btn-outline-danger"
+              type="button"
+              @click="orderStock(order.SELL_STOCK)"
+              :disabled="quantityCondition"
+            >
+              Sell
+            </button>
           </div>
         </div>
       </div>
@@ -61,6 +58,8 @@ import { mapActions } from "vuex";
 
 export default {
   props: {
+    // from Stocks View:    { id, name, price }
+    // from Portfolio View: { id, quantity, name, price }
     stock: Object
   },
 
@@ -93,17 +92,16 @@ export default {
       sellStock: types.SELL_STOCK
     }),
 
-    orderStock(fn) {
+    orderStock(orderType) {
       const order = {
         stockId: this.stock.id,
-        stockName: this.stock.name,
         stockPrice: this.stock.price,
-        orderQuantity: this.quantity
+        quantity: Number(this.quantity)
       };
 
-      if (fn == this.order.BUY_STOCK) {
+      if (orderType == this.order.BUY_STOCK) {
         this.buyStock(order);
-      } else if (fn == this.order.SELL_STOCK) {
+      } else if (orderType == this.order.SELL_STOCK) {
         this.sellStock(order);
       }
       this.quantity = 0;
