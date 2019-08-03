@@ -13,7 +13,9 @@
             class="text-primary float-right"
           >
             <span class="text-secondary">Quantity:</span>
-            {{ stock.quantity }}
+            <span @click="quantity = stock.quantity" style="cursor: pointer">{{
+              " " + stock.quantity
+            }}</span>
           </span>
         </h4>
         <div class="input-group">

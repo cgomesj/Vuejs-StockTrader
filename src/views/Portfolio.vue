@@ -1,7 +1,6 @@
 <template>
   <div class="row">
     <div class="col">
-      <h1>The Portfolio View</h1>
       <div class="row">
         <component
           :is="'app-stock-unit'"

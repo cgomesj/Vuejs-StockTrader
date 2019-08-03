@@ -28,9 +28,7 @@
 
       <ul class="navbar-nav mr-lg-3">
         <li class="nav-item">
-          <a class="nav-link text-warning" href="#" @click="endDay(5)"
-            >End Day</a
-          >
+          <a class="nav-link text-warning" href="#" @click="endDay">End Day</a>
         </li>
         <li class="nav-item dropdown">
           <a
@@ -43,8 +41,8 @@
             >Save & Load</a
           >
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Save Data</a>
-            <a class="dropdown-item" href="#">Load Data</a>
+            <a class="dropdown-item" href="#" @click="saveData">Save Data</a>
+            <a class="dropdown-item" href="#" @click="loadData">Load Data</a>
           </div>
         </li>
       </ul>
@@ -60,14 +58,27 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      funds: types.GET_FUNDS
+      funds: types.GET_FUNDS,
+      stockPortfolio: types.GET_PORTFOLIO_STOCKS,
+      stocks: types.GET_STOCKS
     })
   },
 
   methods: {
     ...mapActions({
-      endDay: types.END_DAY
-    })
+      endDay: types.RANDOMIZE_STOCK,
+      loadData: types.LOAD_DATA
+    }),
+
+    saveData() {
+      const data = {
+        funds: this.funds,
+        stockPortfolio: this.stockPortfolio,
+        stocks: this.stocks
+      };
+
+      this.$http.put("data.json", data);
+    }
   }
 };
 </script>
@@ -79,5 +90,13 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #313131;
+}
+
+#nav .dropdown a {
+  color: #646464;
+}
+
+#nav .dropdown .dropdown-item:active {
+  background: #b8b8b8;
 }
 </style>

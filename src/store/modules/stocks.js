@@ -16,26 +16,28 @@ const mutations = {
     state.stocks = stocks;
   },
 
-  [types.MUTATION_RANDOM_STOCK]: state => {},
+  [types.MUTATION_RANDOMIZE_STOCK]: state => {
+    state.stocks.forEach(stock => {
+      const upRandom = Math.random();
+      const downRandom = Math.random();
+      const newPrice = Math.round(
+        stock.price * (1 + (1.15 * upRandom - downRandom))
+      );
 
-  [types.MUTATION_END_DAY]: (state, payload) => {
-    for (let index = 0; index < state.stocks.length; index++) {
-      state.stocks[index].price += payload;
-    }
+      if (newPrice >= 1) {
+        stock.price = newPrice;
+      }
+    });
   }
 };
 
 const actions = {
-  [types.SET_STOCK]: ({ commit }) => {
+  [types.SET_STOCK]: ({ commit }, stocks) => {
     commit(types.MUTATION_SET_STOCK, stocks);
   },
 
-  [types.RANDOM_STOCK]: ({ commit }) => {
-    commit(types.MUTATION_RANDOM_STOCK);
-  },
-
-  [types.END_DAY]: ({ commit }, payload) => {
-    commit(types.MUTATION_END_DAY, payload);
+  [types.RANDOMIZE_STOCK]: ({ commit }) => {
+    commit(types.MUTATION_RANDOMIZE_STOCK);
   }
 };
 

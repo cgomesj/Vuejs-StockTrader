@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>The Stocks View</h1>
     <div class="row">
       <component
         :is="'app-stock-unit'"

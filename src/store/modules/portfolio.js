@@ -26,6 +26,10 @@ const getters = {
 };
 
 const mutations = {
+  [types.MUTATION_SET_PORTFOLIO]: (state, stockPortfolio) => {
+    state.portfolioStocks = stockPortfolio;
+  },
+
   [types.MUTATION_BUY_STOCK]: (state, { stockId, quantity }) => {
     const record = state.portfolioStocks.find(element => element.id == stockId);
 
@@ -46,23 +50,37 @@ const mutations = {
     }
   },
 
-  [types.MUTATION_UPDATE_FUNDS]: (state, { operation, totalAmount }) => {
+  [types.MUTATION_UPDATE_FUNDS]: (state, { operation, amount }) => {
     if (operation == "buy") {
-      state.funds -= totalAmount;
+      state.funds -= amount;
     } else if (operation == "sell") {
-      state.funds += totalAmount;
+      state.funds += amount;
+    } else if (operation == "set") {
+      state.funds = amount;
     }
   }
 };
 
 const actions = {
+  [types.SET_PORTFOLIO]: ({ commit }, portfolio) => {
+    let stockPortfolio = [];
+
+    if (portfolio.stockPortfolio) {
+      stockPortfolio = portfolio.stockPortfolio;
+    }
+    const amount = portfolio.funds;
+
+    commit(types.MUTATION_SET_PORTFOLIO, stockPortfolio);
+    commit(types.MUTATION_UPDATE_FUNDS, { operation: "set", amount });
+  },
+
   [types.BUY_STOCK]: ({ commit }, { stockId, stockPrice, quantity }) => {
     const funds = state.funds;
-    const totalAmount = stockPrice * quantity;
+    const amount = stockPrice * quantity;
 
-    if (funds >= totalAmount) {
+    if (funds >= amount) {
       commit(types.MUTATION_BUY_STOCK, { stockId, quantity });
-      commit(types.MUTATION_UPDATE_FUNDS, { operation: "buy", totalAmount });
+      commit(types.MUTATION_UPDATE_FUNDS, { operation: "buy", amount });
     } else {
       alert("Insufficient funds");
     }
@@ -72,9 +90,9 @@ const actions = {
     const record = state.portfolioStocks.find(element => element.id == stockId);
 
     if (record.quantity >= quantity) {
-      const totalAmount = stockPrice * quantity;
+      const amount = stockPrice * quantity;
       commit(types.MUTATION_SELL_STOCK, { stockId, quantity });
-      commit(types.MUTATION_UPDATE_FUNDS, { operation: "sell", totalAmount });
+      commit(types.MUTATION_UPDATE_FUNDS, { operation: "sell", amount });
     } else {
       alert(
         "You have " +
